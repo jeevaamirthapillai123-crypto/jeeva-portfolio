@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jeeva A Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: sticky slim nav, hero split (name + live order-lifecycle demo), then ruled sections with a left label column on desktop */
+:root{
+  --bg:#EEF1F5;
+  --surface:#FFFFFF;
+  --fg:#0F1A26;
+  --muted:#4F5E6F;
+  --line:#D2D9E1;
+  --accent:#2B4FE0;
+  --accent-ink:#FFFFFF;
+  --accent-soft:#E1E8FF;
+  --ok:#17794A;
+  --bad:#B42318;
+  --display:'Bricolage Grotesque','Segoe UI',system-ui,sans-serif;
+  --body:'Figtree','Segoe UI',system-ui,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0B121A;--surface:#121C27;--fg:#E8EEF5;--muted:#9AABBD;--line:#233243;
+    --accent:#7F9BFF;--accent-ink:#0B121A;--accent-soft:#1B2A52;--ok:#4CC28A;--bad:#FF8A7A;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0B121A;--surface:#121C27;--fg:#E8EEF5;--muted:#9AABBD;--line:#233243;
+  --accent:#7F9BFF;--accent-ink:#0B121A;--accent-soft:#1B2A52;--ok:#4CC28A;--bad:#FF8A7A;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{color-scheme:light}
+body{margin:0}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+body{
+  background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:0;
+}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--bg)}
+.wrap{max-width:1080px;margin:0 auto}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+
+/* nav */
+header.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:12px}
+.brand{font-family:var(--display);font-weight:800;font-size:1.1rem;text-decoration:none;letter-spacing:-.01em}
+.brand span{color:var(--accent)}
+.nav ul{display:flex;gap:4px;list-style:none;margin:0;padding:0;flex-wrap:wrap;justify-content:flex-end}
+.nav li a{display:block;padding:6px 10px;border-radius:6px;text-decoration:none;font-size:.9rem;color:var(--muted);font-weight:500}
+.nav li a:hover{color:var(--fg);background:var(--accent-soft)}
+@media (max-width:560px){.nav li:nth-child(n+4){display:none}}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.1fr 1fr;gap:48px;padding-block:64px 56px;align-items:center}
+.hero>*{min-width:0}
+.kicker{font-family:var(--mono);font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin:0 0 16px;font-weight:500}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(2.6rem,7vw,4.6rem);line-height:.98;letter-spacing:-.035em;margin:0 0 20px;text-wrap:balance}
+.lede{font-size:1.15rem;color:var(--muted);max-width:34em;margin:0 0 28px}
+.lede strong{color:var(--fg);font-weight:600}
+.cta{display:flex;gap:12px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:8px;font-weight:600;font-size:.95rem;text-decoration:none;border:1px solid var(--line);background:var(--surface);color:var(--fg)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn:hover{transform:translateY(-1px)}
+.facts{display:flex;flex-wrap:wrap;gap:8px 20px;margin:28px 0 0;padding:0;list-style:none;font-family:var(--mono);font-size:.8rem;color:var(--muted)}
+
+/* lifecycle demo */
+.demo{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 1px 0 var(--line),0 18px 40px -24px rgba(15,26,38,.35)}
+.demo-bar{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:10px 16px;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:.75rem;color:var(--muted)}
+.demo-body{padding:16px}
+.demo-title{font-family:var(--display);font-weight:700;font-size:1.05rem;margin:0 0 4px}
+.demo-sub{margin:0 0 14px;color:var(--muted);font-size:.88rem}
+.stages{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.stages button{width:100%;display:flex;align-items:center;gap:12px;text-align:left;padding:10px 12px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--fg);font:inherit;font-size:.92rem;cursor:pointer}
+.stages button:hover{border-color:var(--accent)}
+.dot{width:12px;height:12px;border-radius:50%;border:2px solid var(--muted);flex:none}
+.stages li.done button{color:var(--muted)}
+.stages li.done .dot{background:var(--ok);border-color:var(--ok)}
+.stages li.now button{border-color:var(--accent);background:var(--accent-soft);font-weight:600}
+.stages li.now .dot{border-color:var(--accent);background:var(--accent)}
+.stages .code{margin-left:auto;font-family:var(--mono);font-size:.72rem;color:var(--muted)}
+.console{margin-top:14px;padding:12px 14px;border-radius:8px;background:var(--bg);border:1px solid var(--line);font-family:var(--mono);font-size:.8rem;line-height:1.5;min-height:3.9em}
+.console .ok{color:var(--ok)}
+.console .bad{color:var(--bad)}
+.partner{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:12px;font-size:.85rem;color:var(--muted)}
+.pill{font-family:var(--mono);font-size:.75rem;padding:3px 10px;border-radius:999px;border:1px solid var(--line);color:var(--muted);background:var(--bg)}
+.pill.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.reset{margin-left:auto;font:inherit;font-size:.8rem;color:var(--accent);background:none;border:none;cursor:pointer;text-decoration:underline;padding:4px}
+.demo-note{font-size:.75rem;color:var(--muted);margin:10px 0 0}
+
+/* sections */
+section{border-top:1px solid var(--line);padding-block:56px;display:grid;grid-template-columns:200px 1fr;gap:32px}
+section>*{min-width:0}
+.label{font-family:var(--mono);font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:6px 0 0}
+h2{font-family:var(--display);font-size:clamp(1.6rem,3.6vw,2.2rem);line-height:1.1;letter-spacing:-.02em;margin:0 0 20px;text-wrap:balance}
+h3{font-family:var(--display);font-size:1.2rem;margin:0;letter-spacing:-.01em}
+p{margin:0 0 14px}
+.muted{color:var(--muted)}
+
+.skills{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 32px}
+.skills h3{font-family:var(--mono);font-size:.78rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;list-style:none;margin:0;padding:0}
+.chips li{padding:4px 10px;border:1px solid var(--line);background:var(--surface);border-radius:6px;font-size:.88rem}
+.chips li.core{border-color:var(--accent);background:var(--accent-soft);font-weight:500}
+
+.job{display:grid;grid-template-columns:150px 1fr;gap:20px;padding-block:24px;border-top:1px dashed var(--line)}
+.job:first-of-type{border-top:none;padding-top:0}
+.job>*{min-width:0}
+.when{font-family:var(--mono);font-size:.82rem;color:var(--muted)}
+.job h3 span{color:var(--muted);font-weight:500}
+.job ul{margin:12px 0 0;padding-left:1.1em}
+.job li{margin-bottom:8px}
+.job li::marker{color:var(--accent)}
+
+.project{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:24px;margin-bottom:20px}
+.project .stack{font-family:var(--mono);font-size:.78rem;color:var(--accent);margin:6px 0 14px}
+.project ul{margin:0;padding-left:1.1em}
+.project li{margin-bottom:8px}
+.project li::marker{color:var(--accent)}
+.resources{display:flex;flex-wrap:wrap;gap:6px;margin:16px 0 0;padding:0;list-style:none}
+.resources li{font-family:var(--mono);font-size:.78rem;padding:3px 9px;border-radius:5px;background:var(--bg);border:1px solid var(--line);color:var(--muted)}
+
+.edu{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.edu div{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px}
+.edu p{margin:6px 0 0;color:var(--muted);font-size:.92rem}
+
+.contact{display:grid;gap:10px;margin:20px 0 0;padding:0;list-style:none}
+.contact li{display:flex;flex-wrap:wrap;gap:6px 16px;align-items:baseline;padding:12px 0;border-bottom:1px solid var(--line)}
+.contact .k{font-family:var(--mono);font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);width:90px;flex:none}
+.contact .v{font-size:1.02rem;overflow-wrap:anywhere;user-select:all}
+.copy{margin-left:auto;font:inherit;font-size:.8rem;padding:4px 10px;border-radius:6px;border:1px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer}
+footer{border-top:1px solid var(--line);padding-block:24px 40px;color:var(--muted);font-size:.85rem;font-family:var(--mono)}
+
+@media (max-width:820px){
+  .hero{grid-template-columns:1fr;gap:36px;padding-block:40px 40px}
+  section{grid-template-columns:1fr;gap:8px;padding-block:40px}
+  .label{margin:0 0 4px}
+  .job{grid-template-columns:1fr;gap:6px}
+  .skills,.edu{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn:hover{transform:none}}
+</style>
+
+</head>
+<body>
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top">Jeeva<span>.</span>dev</a>
+    <nav aria-label="Sections">
+      <ul>
+        <li><a href="#work">Experience</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#education">Education</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap" id="top">
+  <div class="hero">
+    <div>
+      <p class="kicker">Java Full Stack Developer</p>
+      <h1>Jeeva A</h1>
+      <p class="lede">I build the backend that keeps an app honest: <strong>Spring Boot REST APIs</strong>, secured with <strong>JWT</strong>, backed by <strong>MySQL</strong>, and paired with clean, responsive interfaces. Open to junior and fresher Java roles.</p>
+      <div class="cta">
+        <a class="btn primary" href="#projects">See my projects</a>
+        <a class="btn" href="#contact">Get in touch</a>
+      </div>
+      <ul class="facts">
+        <li>Java 17</li>
+        <li>Spring Boot</li>
+        <li>MySQL</li>
+        <li>Chennai-trained · India</li>
+      </ul>
+    </div>
+
+    <aside class="demo" aria-label="Order lifecycle demo">
+      <div class="demo-bar"><span>order #1042</span><span id="statusCode">status: PLACED</span></div>
+      <div class="demo-body">
+        <h2 class="demo-title" style="margin-bottom:4px">Try the order lifecycle</h2>
+        <p class="demo-sub">From my grocery delivery backend. Move the order forward, or try to skip a stage.</p>
+        <ol class="stages" id="stages"></ol>
+        <div class="console" id="console" aria-live="polite"></div>
+        <div class="partner">
+          <span>Delivery partner</span>
+          <span class="pill" id="pAvail">Available</span>
+          <span class="pill" id="pDeliv">On Delivery</span>
+          <span class="pill" id="pOff">Offline</span>
+          <button class="reset" id="reset" type="button">Reset</button>
+        </div>
+        <p class="demo-note">Interactive illustration of the rules I implemented, running in your browser.</p>
+      </div>
+    </aside>
+  </div>
+
+  <section id="about">
+    <p class="label">About</p>
+    <div>
+      <h2>Clear backend structure, reliable data</h2>
+      <p>I work across the stack, with my strongest ground in Java: controllers, service layers, JPA mappings and well-designed SQL. I like code that is easy to read, endpoints that fail with clear messages, and databases that stay consistent.</p>
+      <p class="muted">Certified by Besant Technologies. Comfortable with Git branching, Agile sprints and daily standups.</p>
+    </div>
+  </section>
+
+  <section id="work">
+    <p class="label">Experience</p>
+    <div>
+      <h2>Where I have worked</h2>
+      <div class="job">
+        <div class="when">08/2024 – 08/2025</div>
+        <div>
+          <h3>Java Full Stack Developer <span>· Green Cattle City Private Limited</span></h3>
+          <ul>
+            <li>Developed the backend of a grocery delivery platform using Java 17, Spring Boot, Spring Data JPA and MySQL, with REST APIs for products, cart, addresses, orders and delivery partners.</li>
+            <li>Implemented order management with a six-stage lifecycle and status-transition validation that blocks invalid updates.</li>
+            <li>Built an automatic delivery-partner assignment module that allocates available partners to new orders and updates availability in real time.</li>
+            <li>Added JWT token generation and Spring Security configuration to secure endpoints, and configured CORS for frontend integration.</li>
+            <li>Centralized error handling with a global exception handler and custom exceptions, returning consistent 400, 404 and 500 responses. Tested all endpoints with Postman.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="job">
+        <div class="when">02/2025 – 05/2025</div>
+        <div>
+          <h3>Java Full Stack Developer Trainee <span>· Besant Technologies, Chennai</span></h3>
+          <ul>
+            <li>Built RESTful APIs with Spring Boot, validated them in Postman, and connected services to MySQL through JDBC and Spring Data.</li>
+            <li>Created responsive, mobile-first interfaces with HTML5, CSS3, Bootstrap and JavaScript, plus basic React.js components for dynamic content.</li>
+            <li>Implemented full stack CRUD flows across UI, controllers, service layers and the database.</li>
+            <li>Wrote SQL queries, joins, subqueries, stored procedures and triggers for reliable data retrieval and integrity.</li>
+            <li>Managed code with Git and GitHub branching, deployed apps on Apache Tomcat, and streamlined builds with Maven.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <p class="label">Projects</p>
+    <div>
+      <h2>Things I have built</h2>
+
+      <article class="project">
+        <h3>Grocery Delivery Application (Instamart Clone)</h3>
+        <p class="stack">Java 17 · Spring Boot · Spring Security · JWT · JPA · MySQL · Postman</p>
+        <p class="muted">A quick-commerce backend covering the full flow from browsing products to order delivery.</p>
+        <ul>
+          <li>REST APIs for registration and login, product catalog, shopping cart, saved addresses, order placement and delivery-partner management.</li>
+          <li>Order totals calculated from line items, saved with cascading order-item records using JPA one-to-many and many-to-one mappings.</li>
+          <li>Order tracking with enforced status transitions and an endpoint for live order status. Delivery partners can view their assigned orders.</li>
+          <li>Automatic assignment of available partners to new orders, with partner status (Available, On Delivery, Offline) updated on assignment.</li>
+          <li>Secured with Spring Security and JWT, with a global exception handler, structured error responses and ModelMapper for DTO mapping.</li>
+        </ul>
+        <ul class="resources" aria-label="API areas">
+          <li>Users</li><li>Products</li><li>Cart</li><li>Addresses</li><li>Orders</li><li>Delivery partners</li>
+        </ul>
+      </article>
+
+      <article class="project">
+        <h3>Gym Membership Management System</h3>
+        <p class="stack">MySQL · SQL · Database design</p>
+        <p class="muted">A relational database for members, instructors, fitness classes and enrollments.</p>
+        <ul>
+          <li>Designed a normalized schema (3NF) for members, instructors, classes and enrollment records.</li>
+          <li>Wrote multi-table JOIN queries and aggregate functions for membership reports and class attendance summaries.</li>
+          <li>Set up audit logging through database rules and used SQL Views for faster reporting.</li>
+          <li>Applied ACID-compliant transactions for enrollment and fee payment, including rollback handling.</li>
+          <li>Improved query performance with indexes and execution-plan analysis.</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <section id="skills">
+    <p class="label">Skills</p>
+    <div>
+      <h2>Tools I work with</h2>
+      <div class="skills">
+        <div>
+          <h3>Language</h3>
+          <ul class="chips"><li class="core">Core Java</li><li>OOP</li><li>Collections</li><li>Multithreading</li><li>Exception handling</li></ul>
+        </div>
+        <div>
+          <h3>Backend</h3>
+          <ul class="chips"><li class="core">Spring Boot</li><li>Spring MVC</li><li>Spring Security</li><li>Spring Data JPA</li><li>Hibernate</li><li>REST API</li><li>JDBC</li><li>JWT</li></ul>
+        </div>
+        <div>
+          <h3>Database</h3>
+          <ul class="chips"><li class="core">MySQL</li><li>Joins</li><li>Subqueries</li><li>Stored procedures</li><li>Triggers</li><li>Views</li><li>Normalization</li></ul>
+        </div>
+        <div>
+          <h3>Frontend</h3>
+          <ul class="chips"><li>HTML5</li><li>CSS3</li><li>JavaScript ES6+</li><li>Bootstrap 4/5</li><li>React.js (basics)</li></ul>
+        </div>
+        <div>
+          <h3>Tools</h3>
+          <ul class="chips"><li>Git</li><li>GitHub</li><li>Maven</li><li>Postman</li><li>Apache Tomcat</li><li>Eclipse IDE</li></ul>
+        </div>
+        <div>
+          <h3>Ways of working</h3>
+          <ul class="chips"><li>Agile Scrum</li><li>MVC architecture</li><li>RESTful web services</li></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="education">
+    <p class="label">Education</p>
+    <div>
+      <h2>Learning and certification</h2>
+      <div class="edu">
+        <div>
+          <h3>B.Sc Computer Science</h3>
+          <p>Pondicherry University · Aringar Anna Government Arts &amp; Science College, Karaikal</p>
+          <p class="when">08/2021 – 05/2024</p>
+        </div>
+        <div>
+          <h3>Java Full Stack Developer Certification</h3>
+          <p>Besant Technologies, Chennai</p>
+          <p class="when">2025</p>
+        </div>
+      </div>
+      <p class="muted" style="margin-top:20px">Languages: English (professional proficiency), Tamil (native).</p>
+    </div>
+  </section>
+
+  <section id="contact">
+    <p class="label">Contact</p>
+    <div>
+      <h2>Let us talk about your Java team</h2>
+      <p class="muted">I am looking for a Java full stack or backend role where I can keep building and learning. Reach me any of these ways.</p>
+      <ul class="contact">
+        <li><span class="k">Email</span><span class="v" id="vEmail">jeevaamirthapillai123@email.com</span><button class="copy" data-copy="vEmail" type="button">Copy</button></li>
+        <li><span class="k">Phone</span><span class="v" id="vPhone">+91 7548836493</span><button class="copy" data-copy="vPhone" type="button">Copy</button></li>
+        <li><span class="k">LinkedIn</span><a class="v" href="https://linkedin.com/in/jeeva-a-60a6a3357" target="_blank" rel="noopener">linkedin.com/in/jeeva-a-60a6a3357</a></li>
+        <li><span class="k">Location</span><span class="v">India</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <footer>© 2026 Jeeva A · Java Full Stack Developer</footer>
+</main>
+
+<script>
+(function(){
+  var STAGES=['Placed','Assigned','Packed','Picked Up','Out for Delivery','Delivered'];
+  var cur=0;
+  var list=document.getElementById('stages');
+  var con=document.getElementById('console');
+  var code=document.getElementById('statusCode');
+  var pa=document.getElementById('pAvail'),pd=document.getElementById('pDeliv'),po=document.getElementById('pOff');
+
+  function render(){
+    list.innerHTML='';
+    STAGES.forEach(function(s,i){
+      var li=document.createElement('li');
+      li.className=i<cur?'done':(i===cur?'now':'');
+      var b=document.createElement('button');
+      b.type='button';
+      b.innerHTML='<span class="dot"></span><span>'+s+'</span><span class="code">'+(i===cur?'current':(i===cur+1?'next':''))+'</span>';
+      b.addEventListener('click',function(){go(i)});
+      li.appendChild(b);list.appendChild(li);
+    });
+    code.textContent='status: '+STAGES[cur].toUpperCase().replace(/ /g,'_');
+    var onDelivery=cur>=1&&cur<STAGES.length-1;
+    pa.className='pill'+(!onDelivery?' on':'');
+    pd.className='pill'+(onDelivery?' on':'');
+    po.className='pill';
+  }
+  function say(html){con.innerHTML=html}
+  function go(i){
+    if(i===cur){say('<span>No change. Order is already '+STAGES[cur]+'.</span>');return}
+    if(i===cur+1){
+      cur=i;render();
+      var extra=cur===1?' Partner assigned automatically.':(cur===STAGES.length-1?' Partner is Available again.':'');
+      say('<span class="ok">200 OK</span> Order moved to '+STAGES[cur]+'.'+extra);
+    }else if(i<cur){
+      say('<span class="bad">400 Bad Request</span> Cannot move back from '+STAGES[cur]+' to '+STAGES[i]+'.');
+    }else{
+      say('<span class="bad">400 Bad Request</span> Cannot jump from '+STAGES[cur]+' to '+STAGES[i]+'. Next valid stage is '+STAGES[cur+1]+'.');
+    }
+  }
+  document.getElementById('reset').addEventListener('click',function(){cur=0;render();say('Order reset to Placed. Click the next stage to advance it.')});
+  render();
+  say('Click <strong>Assigned</strong> to advance the order, or try <strong>Delivered</strong> to see the validation.');
+
+  document.querySelectorAll('.copy').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var el=document.getElementById(btn.getAttribute('data-copy'));
+      var txt=el.textContent;
+      function sel(){var r=document.createRange();r.selectNodeContents(el);var s=window.getSelection();s.removeAllRanges();s.addRange(r);btn.textContent='Selected'}
+      try{
+        navigator.clipboard.writeText(txt).then(function(){btn.textContent='Copied'},sel);
+      }catch(e){sel()}
+      setTimeout(function(){btn.textContent='Copy'},1800);
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
